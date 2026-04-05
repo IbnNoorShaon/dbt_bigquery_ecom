@@ -1,0 +1,29 @@
+version: 2
+
+sources:
+  - name: thelook_ecommerce
+    database: bigquery-public-data
+    schema: thelook_ecommerce
+    description: "The Look fictitious e-commerce public dataset on BigQuery"
+
+    tables:
+      - name: orders
+        description: "Customer orders"
+
+      - name: order_items
+        description: "Individual line items within orders"
+
+      - name: products
+        description: "Product catalog"
+
+      - name: users
+        description: "Customer profiles"
+
+      - name: distribution_centers
+        description: "Warehouse distribution center locations"
+
+      - name: events
+        description: "Web clickstream events"
+
+      - name: inventory_items
+        description: "Individual inventory units"

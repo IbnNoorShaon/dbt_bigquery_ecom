@@ -1,0 +1,67 @@
+version: 2
+
+models:
+  - name: raw_products
+    description: "Raw view of products from thelook_ecommerce public dataset. Light casting applied via macro with audit columns."
+    config:
+      materialized: view
+      schema: raw
+
+    columns:
+      - name: id
+        description: "Primary key for products"
+        tests:
+          - unique
+          - not_null
+
+      - name: name
+        description: "Product name"
+        tests:
+          - not_null
+
+      - name: category
+        description: "Product category e.g. Jeans, Tops"
+        tests:
+          - not_null
+
+      - name: brand
+        description: "Product brand name"
+
+      - name: department
+        description: "Department e.g. Men, Women"
+
+      - name: sku
+        description: "Stock keeping unit identifier"
+
+      - name: cost
+        description: "Product cost to the business in USD"
+        tests:
+          - not_null
+
+      - name: retail_price
+        description: "Retail price sold to customers in USD"
+        tests:
+          - not_null
+
+      - name: distribution_center_id
+        description: "FK to distribution centers"
+        tests:
+          - not_null
+
+      - name: _loaded_at
+        description: "Timestamp when the view was queried"
+
+      - name: _source_database
+        description: "Source GCP project"
+
+      - name: _source_schema
+        description: "Source dataset name"
+
+      - name: _source_table
+        description: "Source table name"
+
+      - name: _dbt_invocation_id
+        description: "Unique dbt run invocation ID"
+
+      - name: _environment
+        description: "dbt environment e.g. development or production"
