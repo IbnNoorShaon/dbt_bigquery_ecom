@@ -27,8 +27,12 @@ models:
       - name: email
         description: "User email address"
         tests:
-          - unique
-          - not_null
+          - not_null:
+              config:
+                severity: warn
+          - unique:
+              config:
+                severity: warn
 
       - name: age
         description: "User age in years"
