@@ -1,0 +1,65 @@
+version: 2
+
+models:
+  - name: raw_orders
+    description: "Raw view of orders from thelook_ecommerce public dataset."
+    config:
+      materialized: view
+      schema: raw
+
+    columns:
+      - name: order_id
+        description: "Primary key for orders"
+        tests:
+          - unique
+          - not_null
+
+      - name: user_id
+        description: "FK to users"
+        tests:
+          - not_null
+
+      - name: status
+        description: "Order status e.g. complete, returned, cancelled"
+        tests:
+          - not_null
+
+      - name: gender
+        description: "Gender associated with the order"
+
+      - name: num_of_item
+        description: "Number of items in the order"
+        tests:
+          - not_null
+
+      - name: created_at
+        description: "Timestamp when order was created"
+        tests:
+          - not_null
+
+      - name: shipped_at
+        description: "Timestamp when order was shipped"
+
+      - name: delivered_at
+        description: "Timestamp when order was delivered"
+
+      - name: returned_at
+        description: "Timestamp when order was returned"
+
+      - name: _loaded_at
+        description: "Timestamp when the view was queried"
+
+      - name: _source_database
+        description: "Source GCP project"
+
+      - name: _source_schema
+        description: "Source dataset name"
+
+      - name: _source_table
+        description: "Source table name"
+
+      - name: _dbt_invocation_id
+        description: "Unique dbt run invocation ID"
+
+      - name: _environment
+        description: "dbt environment e.g. development or production"

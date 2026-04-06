@@ -1,0 +1,83 @@
+version: 2
+
+models:
+  - name: raw_users
+    description: "Raw view of user profiles from thelook_ecommerce public dataset."
+    config:
+      materialized: view
+      schema: raw
+
+    columns:
+      - name: id
+        description: "Primary key for users"
+        tests:
+          - unique
+          - not_null
+
+      - name: first_name
+        description: "User first name"
+        tests:
+          - not_null
+
+      - name: last_name
+        description: "User last name"
+        tests:
+          - not_null
+
+      - name: email
+        description: "User email address"
+        tests:
+          - unique
+          - not_null
+
+      - name: age
+        description: "User age in years"
+
+      - name: gender
+        description: "User gender"
+
+      - name: city
+        description: "User city"
+
+      - name: state
+        description: "User state"
+
+      - name: country
+        description: "User country"
+
+      - name: postal_code
+        description: "User postal code"
+
+      - name: latitude
+        description: "Geographic latitude"
+
+      - name: longitude
+        description: "Geographic longitude"
+
+      - name: traffic_source
+        description: "Marketing channel that acquired the user"
+        tests:
+          - not_null
+
+      - name: created_at
+        description: "Timestamp when user account was created"
+        tests:
+          - not_null
+
+      - name: _loaded_at
+        description: "Timestamp when the view was queried"
+
+      - name: _source_database
+        description: "Source GCP project"
+
+      - name: _source_schema
+        description: "Source dataset name"
+
+      - name: _source_table
+        description: "Source table name"
+
+      - name: _dbt_invocation_id
+        description: "Unique dbt run invocation ID"
+
+      - name: _environment
+        description: "dbt environment e.g. development or production"
