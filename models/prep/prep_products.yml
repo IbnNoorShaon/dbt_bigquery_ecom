@@ -1,0 +1,76 @@
+version: 2
+
+models:
+  - name: prep_products
+    description: "Cleaned and enriched product data with margin calculations and price tier segmentation."
+    config:
+      materialized: view
+      schema: prep
+
+    columns:
+      - name: product_id
+        description: "Primary key for products"
+        tests:
+          - unique
+          - not_null
+
+      - name: product_name
+        description: "Product name"
+
+      - name: product_category
+        description: "Product category e.g. Jeans, Tops"
+        tests:
+          - not_null:
+              config:
+                severity: warn
+
+      - name: product_brand
+        description: "Product brand name"
+
+      - name: product_department
+        description: "Department e.g. Men, Women"
+
+      - name: product_sku
+        description: "Stock keeping unit identifier"
+
+      - name: distribution_center_id
+        description: "FK to distribution centers"
+
+      - name: product_cost
+        description: "Product cost to the business in USD"
+
+      - name: product_retail_price
+        description: "Retail price sold to customers in USD"
+
+      - name: product_gross_margin
+        description: "Gross margin in USD (retail price - cost)"
+
+      - name: product_margin_pct
+        description: "Gross margin as a percentage of retail price"
+
+      - name: product_price_tier
+        description: "Price tier: Budget, Mid-Range, Premium, Luxury"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["Budget", "Mid-Range", "Premium", "Luxury"]
+              config:
+                severity: warn
+
+      - name: _loaded_at
+        description: "Timestamp when the view was queried"
+
+      - name: _source_database
+        description: "Source GCP project"
+
+      - name: _source_schema
+        description: "Source dataset name"
+
+      - name: _source_table
+        description: "Source table name"
+
+      - name: _dbt_invocation_id
+        description: "Unique dbt run invocation ID"
+
+      - name: _environment
+        description: "dbt environment e.g. development or production"
