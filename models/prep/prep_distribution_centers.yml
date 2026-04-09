@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: prep_distribution_centers
+    description: "Cleaned distribution centers with renamed columns."
+    config:
+      materialized: view
+      schema: prep
+
+    columns:
+      - name: distribution_center_id
+        description: "Primary key for distribution centers"
+        tests:
+          - unique
+          - not_null
+
+      - name: distribution_center_name
+        description: "Name of the distribution center"
+        tests:
+          - not_null
+
+      - name: distribution_center_latitude
+        description: "Geographic latitude of the distribution center"
+
+      - name: distribution_center_longitude
+        description: "Geographic longitude of the distribution center"
+
+      - name: _loaded_at
+        description: "Timestamp when the view was queried"
+
+      - name: _source_database
+        description: "Source GCP project"
+
+      - name: _source_schema
+        description: "Source dataset name"
+
+      - name: _source_table
+        description: "Source table name"
+
+      - name: _dbt_invocation_id
+        description: "Unique dbt run invocation ID"
+
+      - name: _environment
+        description: "dbt environment e.g. development or production"
