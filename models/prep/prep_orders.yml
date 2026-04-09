@@ -1,0 +1,95 @@
+version: 2
+
+models:
+  - name: prep_orders
+    description: "Cleaned and enriched orders with date parts, delivery metrics and status flags."
+    config:
+      materialized: view
+      schema: prep
+
+    columns:
+      - name: order_id
+        description: "Primary key for orders"
+        tests:
+          - unique
+          - not_null
+
+      - name: user_id
+        description: "FK to users"
+        tests:
+          - not_null
+
+      - name: order_status
+        description: "Order status e.g. Complete, Returned, Cancelled"
+        tests:
+          - not_null:
+              config:
+                severity: warn
+          - accepted_values:
+              arguments:
+                values:
+                  ["Complete", "Returned", "Cancelled", "Shipped", "Processing"]
+              config:
+                severity: warn
+
+      - name: order_gender
+        description: "Gender associated with the order"
+
+      - name: order_num_items
+        description: "Number of items in the order"
+
+      - name: order_created_at
+        description: "Timestamp when order was created"
+        tests:
+          - not_null
+
+      - name: order_shipped_at
+        description: "Timestamp when order was shipped"
+
+      - name: order_delivered_at
+        description: "Timestamp when order was delivered"
+
+      - name: order_returned_at
+        description: "Timestamp when order was returned"
+
+      - name: order_created_date
+        description: "Date when order was created"
+
+      - name: order_year
+        description: "Year when order was created"
+
+      - name: order_month
+        description: "Month when order was created"
+
+      - name: order_day_of_week
+        description: "Day of week when order was created"
+
+      - name: is_completed
+        description: "True if order status is Complete"
+
+      - name: is_returned
+        description: "True if order status is Returned"
+
+      - name: is_cancelled
+        description: "True if order status is Cancelled"
+
+      - name: days_to_deliver
+        description: "Number of days from order creation to delivery"
+
+      - name: _loaded_at
+        description: "Timestamp when the view was queried"
+
+      - name: _source_database
+        description: "Source GCP project"
+
+      - name: _source_schema
+        description: "Source dataset name"
+
+      - name: _source_table
+        description: "Source table name"
+
+      - name: _dbt_invocation_id
+        description: "Unique dbt run invocation ID"
+
+      - name: _environment
+        description: "dbt environment e.g. development or production"
