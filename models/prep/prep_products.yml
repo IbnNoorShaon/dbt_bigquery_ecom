@@ -67,7 +67,7 @@ models:
         description: "Source dataset name"
 
       - name: _source_table
-        description: "Source table name"
+        description: "Source table name for indentifying"
 
       - name: _dbt_invocation_id
         description: "Unique dbt run invocation ID"

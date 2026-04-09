@@ -22,7 +22,7 @@ with source as (
 
 ),
 
-transformed as (
+transform as (
 
     select
         -- primary key
@@ -61,4 +61,4 @@ transformed as (
 
 )
 
-select * from transformed
+select * from transform
