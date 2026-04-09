@@ -1,0 +1,85 @@
+version: 2
+
+models:
+  - name: prep_inventory_items
+    description: "Cleaned inventory items with sold/available status and days in inventory."
+    config:
+      materialized: view
+      schema: prep
+
+    columns:
+      - name: inventory_item_id
+        description: "Primary key for inventory items"
+        tests:
+          - unique
+          - not_null
+
+      - name: product_id
+        description: "FK to products"
+        tests:
+          - not_null
+
+      - name: distribution_center_id
+        description: "FK to distribution centers"
+
+      - name: product_name
+        description: "Product name"
+
+      - name: product_brand
+        description: "Product brand"
+
+      - name: product_category
+        description: "Product category"
+
+      - name: product_department
+        description: "Product department"
+
+      - name: product_sku
+        description: "Product SKU"
+
+      - name: product_retail_price
+        description: "Product retail price in USD"
+
+      - name: product_cost
+        description: "Product cost in USD"
+
+      - name: inventory_created_at
+        description: "Timestamp when inventory item was created"
+        tests:
+          - not_null
+
+      - name: inventory_sold_at
+        description: "Timestamp when inventory item was sold"
+
+      - name: inventory_status
+        description: "Sold or Available"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['Sold', 'Available']
+              config:
+                severity: warn
+
+      - name: days_in_inventory
+        description: "Days from creation to sale or today if unsold"
+
+      - name: gross_margin
+        description: "Gross margin in USD (retail price - cost)"
+
+      - name: _loaded_at
+        description: "Timestamp when the view was queried"
+
+      - name: _source_database
+        description: "Source GCP project"
+
+      - name: _source_schema
+        description: "Source dataset name"
+
+      - name: _source_table
+        description: "Source table name"
+
+      - name: _dbt_invocation_id
+        description: "Unique dbt run invocation ID"
+
+      - name: _environment
+        description: "dbt environment e.g. development or production"
