@@ -1,0 +1,96 @@
+version: 2
+
+models:
+  - name: prep_events
+    description: "Cleaned web clickstream events with event type flags and date parts."
+    config:
+      materialized: view
+      schema: prep
+
+    columns:
+      - name: event_id
+        description: "Primary key for events"
+        tests:
+          - unique
+          - not_null
+
+      - name: user_id
+        description: "FK to users"
+
+      - name: session_id
+        description: "Session identifier"
+        tests:
+          - not_null
+
+      - name: sequence_number
+        description: "Event sequence number within a session"
+
+      - name: event_type
+        description: "Type of event e.g. purchase, cart, home"
+        tests:
+          - not_null
+
+      - name: event_uri
+        description: "URI of the page visited"
+
+      - name: ip_address
+        description: "IP address of the user"
+
+      - name: browser
+        description: "Browser used by the user"
+
+      - name: traffic_source
+        description: "Marketing channel that drove the session"
+
+      - name: city
+        description: "City of the user"
+
+      - name: state
+        description: "State of the user"
+
+      - name: postal_code
+        description: "Postal code of the user"
+
+      - name: event_created_at
+        description: "Timestamp when event was created"
+        tests:
+          - not_null
+
+      - name: event_created_date
+        description: "Date when event was created"
+
+      - name: event_year
+        description: "Year when event was created"
+
+      - name: event_month
+        description: "Month when event was created"
+
+      - name: event_hour
+        description: "Hour when event was created"
+
+      - name: is_purchase
+        description: "True if event type is purchase"
+
+      - name: is_cart
+        description: "True if event type is cart"
+
+      - name: is_home
+        description: "True if event type is home"
+
+      - name: _loaded_at
+        description: "Timestamp when the view was queried"
+
+      - name: _source_database
+        description: "Source GCP project"
+
+      - name: _source_schema
+        description: "Source dataset name"
+
+      - name: _source_table
+        description: "Source table name"
+
+      - name: _dbt_invocation_id
+        description: "Unique dbt run invocation ID"
+
+      - name: _environment
+        description: "dbt environment e.g. development or production"
