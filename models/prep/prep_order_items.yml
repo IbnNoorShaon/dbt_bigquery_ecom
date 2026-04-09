@@ -1,0 +1,91 @@
+version: 2
+
+models:
+  - name: prep_order_items
+    description: "Cleaned and enriched order items with status flags and rounded sale price."
+    config:
+      materialized: view
+      schema: prep
+
+    columns:
+      - name: order_item_id
+        description: "Primary key for order items"
+        tests:
+          - unique
+          - not_null
+
+      - name: order_id
+        description: "FK to orders"
+        tests:
+          - not_null
+
+      - name: user_id
+        description: "FK to users"
+        tests:
+          - not_null
+
+      - name: product_id
+        description: "FK to products"
+        tests:
+          - not_null
+
+      - name: inventory_item_id
+        description: "FK to inventory items"
+        tests:
+          - not_null
+
+      - name: order_item_status
+        description: "Order item status e.g. Complete, Returned, Cancelled"
+        tests:
+          - not_null:
+              config:
+                severity: warn
+
+      - name: sale_price
+        description: "Actual price paid by customer in USD"
+        tests:
+          - not_null
+
+      - name: order_item_created_at
+        description: "Timestamp when order item was created"
+        tests:
+          - not_null
+
+      - name: order_item_shipped_at
+        description: "Timestamp when order item was shipped"
+
+      - name: order_item_delivered_at
+        description: "Timestamp when order item was delivered"
+
+      - name: order_item_returned_at
+        description: "Timestamp when order item was returned"
+
+      - name: is_completed
+        description: "True if order item status is Complete"
+
+      - name: is_returned
+        description: "True if order item status is Returned"
+
+      - name: is_cancelled
+        description: "True if order item status is Cancelled"
+
+      - name: sale_price_rounded
+        description: "Sale price rounded to 2 decimal places"
+
+      - name: _loaded_at
+        description: "Timestamp when the view was queried"
+
+      - name: _source_database
+        description: "Source GCP project"
+
+      - name: _source_schema
+        description: "Source dataset name"
+
+      - name: _source_table
+        description: "Source table name"
+
+      - name: _dbt_invocation_id
+        description: "Unique dbt run invocation ID"
+
+      - name: _environment
+        description: "dbt environment e.g. development or production"
