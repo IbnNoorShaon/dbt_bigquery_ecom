@@ -1,0 +1,108 @@
+version: 2
+
+models:
+  - name: fct_order_items
+    description: "Fact table for order items pre-joined with product details for Looker Studio self-serve. Incremental merge on order_item_id."
+    config:
+      materialized: incremental
+      schema: serve
+
+    columns:
+      - name: order_item_id
+        description: "Primary key for order items"
+        tests:
+          - unique
+          - not_null
+
+      - name: order_id
+        description: "FK to fct_orders"
+        tests:
+          - not_null
+
+      - name: customer_id
+        description: "FK to dim_customers"
+        tests:
+          - not_null
+
+      - name: product_id
+        description: "FK to dim_products"
+        tests:
+          - not_null
+
+      - name: inventory_item_id
+        description: "FK to inventory items"
+
+      - name: order_item_status
+        description: "Order item status e.g. Complete, Returned, Cancelled"
+
+      - name: sale_price
+        description: "Actual price paid by customer in USD"
+
+      - name: sale_price_rounded
+        description: "Sale price rounded to 2 decimal places"
+
+      - name: order_item_created_at
+        description: "Timestamp when order item was created"
+        tests:
+          - not_null
+
+      - name: order_item_shipped_at
+        description: "Timestamp when order item was shipped"
+
+      - name: order_item_delivered_at
+        description: "Timestamp when order item was delivered"
+
+      - name: order_item_returned_at
+        description: "Timestamp when order item was returned"
+
+      - name: is_completed
+        description: "True if order item status is Complete"
+
+      - name: is_returned
+        description: "True if order item status is Returned"
+
+      - name: is_cancelled
+        description: "True if order item status is Cancelled"
+
+      - name: product_name
+        description: "Product name pre-joined from dim_products"
+
+      - name: product_category
+        description: "Product category pre-joined from dim_products"
+
+      - name: product_brand
+        description: "Product brand pre-joined from dim_products"
+
+      - name: product_department
+        description: "Product department pre-joined from dim_products"
+
+      - name: product_price_tier
+        description: "Product price tier pre-joined from dim_products"
+
+      - name: product_cost
+        description: "Product cost pre-joined from dim_products"
+
+      - name: product_retail_price
+        description: "Product retail price pre-joined from dim_products"
+
+      - name: product_gross_margin
+        description: "Product gross margin pre-joined from dim_products"
+
+      - name: product_margin_pct
+        description: "Product margin percentage pre-joined from dim_products"
+
+      - name: item_profit
+        description: "Profit per item (sale price - product cost)"
+
+      - name: item_margin_pct
+        description: "Margin percentage per item"
+
+      - name: partition_key
+        description: "First day of current month from batch_run"
+        tests:
+          - not_null
+
+      - name: run_datetime
+        description: "Exact timestamp of dbt run from batch_run"
+        tests:
+          - not_null
