@@ -1,0 +1,98 @@
+version: 2
+
+models:
+  - name: fct_inventory
+    description: "Fact table for inventory items pre-joined with distribution center details. Incremental merge on inventory_item_id."
+    config:
+      materialized: incremental
+      schema: serve
+
+    columns:
+      - name: inventory_item_id
+        description: "Primary key for inventory items"
+        tests:
+          - unique
+          - not_null
+
+      - name: product_id
+        description: "FK to dim_products"
+        tests:
+          - not_null
+
+      - name: distribution_center_id
+        description: "FK to distribution centers"
+
+      - name: product_name
+        description: "Product name"
+
+      - name: product_brand
+        description: "Product brand"
+
+      - name: product_category
+        description: "Product category"
+
+      - name: product_department
+        description: "Product department"
+
+      - name: product_sku
+        description: "Product SKU"
+
+      - name: product_retail_price
+        description: "Product retail price in USD"
+
+      - name: product_cost
+        description: "Product cost in USD"
+
+      - name: gross_margin
+        description: "Gross margin in USD"
+
+      - name: distribution_center_name
+        description: "Distribution center name pre-joined"
+
+      - name: distribution_center_latitude
+        description: "Distribution center latitude pre-joined"
+
+      - name: distribution_center_longitude
+        description: "Distribution center longitude pre-joined"
+
+      - name: inventory_status
+        description: "Sold or Available"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["Sold", "Available"]
+              config:
+                severity: warn
+
+      - name: days_in_inventory
+        description: "Days from creation to sale or today if unsold"
+
+      - name: inventory_created_at
+        description: "Timestamp when inventory item was created"
+        tests:
+          - not_null
+
+      - name: inventory_sold_at
+        description: "Timestamp when inventory item was sold"
+
+      - name: inventory_movement
+        description: "Slow Moving, Normal or Fast Moving based on days in inventory"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["Slow Moving", "Normal", "Fast Moving"]
+              config:
+                severity: warn
+
+      - name: margin_pct
+        description: "Margin percentage (gross margin / retail price)"
+
+      - name: partition_key
+        description: "First day of current month from batch_run"
+        tests:
+          - not_null
+
+      - name: run_datetime
+        description: "Exact timestamp of dbt run from batch_run"
+        tests:
+          - not_null
