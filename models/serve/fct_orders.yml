@@ -1,0 +1,92 @@
+version: 2
+
+models:
+  - name: fct_orders
+    description: "Fact table for orders with revenue metrics, status flags and delivery time. Incremental merge on order_id."
+    config:
+      materialized: incremental
+      schema: serve
+
+    columns:
+      - name: order_id
+        description: "Primary key for orders"
+        tests:
+          - unique
+          - not_null
+
+      - name: customer_id
+        description: "FK to dim_customers"
+        tests:
+          - not_null
+
+      - name: order_status
+        description: "Order status e.g. Complete, Returned, Cancelled"
+
+      - name: order_gender
+        description: "Gender associated with the order"
+
+      - name: order_num_items
+        description: "Number of items in the order"
+
+      - name: order_created_at
+        description: "Timestamp when order was created"
+        tests:
+          - not_null
+
+      - name: order_created_date
+        description: "Date when order was created"
+
+      - name: order_year
+        description: "Year when order was created"
+
+      - name: order_month
+        description: "Month when order was created"
+
+      - name: order_day_of_week
+        description: "Day of week when order was created"
+
+      - name: order_shipped_at
+        description: "Timestamp when order was shipped"
+
+      - name: order_delivered_at
+        description: "Timestamp when order was delivered"
+
+      - name: order_returned_at
+        description: "Timestamp when order was returned"
+
+      - name: order_revenue
+        description: "Total revenue for the order in USD"
+
+      - name: order_item_count
+        description: "Number of items in the order"
+
+      - name: returned_items
+        description: "Number of returned items in the order"
+
+      - name: cancelled_items
+        description: "Number of cancelled items in the order"
+
+      - name: avg_item_price
+        description: "Average item price in the order"
+
+      - name: days_to_deliver
+        description: "Number of days from order creation to delivery"
+
+      - name: is_completed
+        description: "True if order status is Complete"
+
+      - name: is_returned
+        description: "True if order status is Returned"
+
+      - name: is_cancelled
+        description: "True if order status is Cancelled"
+
+      - name: partition_key
+        description: "First day of current month from batch_run"
+        tests:
+          - not_null
+
+      - name: run_datetime
+        description: "Exact timestamp of dbt run from batch_run"
+        tests:
+          - not_null
