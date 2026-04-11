@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: batch_run
+    description: "Control table that generates partition key and run datetime for every serve layer model. Always contains one row."
+    config:
+      materialized: view
+      schema: serve
+
+    columns:
+      - name: partition_key
+        description: "First day of current month e.g. 2026-01-01. Changes monthly."
+        tests:
+          - not_null
+
+      - name: run_datetime
+        description: "Exact timestamp when the dbt job ran."
+        tests:
+          - not_null
