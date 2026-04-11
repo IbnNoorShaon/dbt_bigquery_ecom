@@ -1,0 +1,82 @@
+version: 2
+
+models:
+  - name: dim_customers
+    description: "Customer dimension table with demographics, location and acquisition source. Full refresh on every run."
+    config:
+      materialized: table
+      schema: serve
+
+    columns:
+      - name: customer_id
+        description: "Primary key for customers"
+        tests:
+          - unique
+          - not_null
+
+      - name: customer_name
+        description: "Full name of customer"
+
+      - name: customer_first_name
+        description: "First name of customer"
+
+      - name: customer_last_name
+        description: "Last name of customer"
+
+      - name: customer_email
+        description: "Email address of customer"
+        tests:
+          - not_null:
+              config:
+                severity: warn
+
+      - name: customer_gender
+        description: "Gender of customer"
+
+      - name: customer_age
+        description: "Age of customer in years"
+
+      - name: customer_age_group
+        description: "Age group e.g. 18-24, 25-34"
+
+      - name: customer_city
+        description: "City of customer"
+
+      - name: customer_state
+        description: "State of customer"
+
+      - name: customer_country
+        description: "Country of customer"
+
+      - name: customer_postal_code
+        description: "Postal code of customer"
+
+      - name: customer_latitude
+        description: "Geographic latitude of customer"
+
+      - name: customer_longitude
+        description: "Geographic longitude of customer"
+
+      - name: customer_traffic_source
+        description: "Marketing channel that acquired the customer"
+
+      - name: customer_created_at
+        description: "Timestamp when customer account was created"
+        tests:
+          - not_null
+
+      - name: customer_created_date
+        description: "Date when customer account was created"
+
+      - name: customer_created_year
+        description: "Year when customer account was created"
+
+      - name: partition_key
+        description: "First day of current month from batch_run"
+        tests:
+          - not_null
+
+      - name: run_datetime
+        description: "Exact timestamp of dbt run from batch_run"
+        tests:
+          - not_null
