@@ -1,0 +1,103 @@
+version: 2
+
+models:
+  - name: fct_events
+    description: "Fact table for web clickstream events pre-joined with customer details. Incremental merge on event_id."
+    config:
+      materialized: incremental
+      schema: serve
+
+    columns:
+      - name: event_id
+        description: "Primary key for events"
+        tests:
+          - unique
+          - not_null
+
+      - name: user_id
+        description: "FK to dim_customers"
+
+      - name: session_id
+        description: "Session identifier"
+        tests:
+          - not_null
+
+      - name: sequence_number
+        description: "Event sequence number within session"
+
+      - name: event_type
+        description: "Type of event e.g. purchase, cart, home"
+        tests:
+          - not_null
+
+      - name: event_uri
+        description: "URI of the page visited"
+
+      - name: browser
+        description: "Browser used by the user"
+
+      - name: traffic_source
+        description: "Marketing channel that drove the session"
+
+      - name: city
+        description: "City of the user"
+
+      - name: state
+        description: "State of the user"
+
+      - name: postal_code
+        description: "Postal code of the user"
+
+      - name: event_created_at
+        description: "Timestamp when event was created"
+        tests:
+          - not_null
+
+      - name: event_created_date
+        description: "Date when event was created"
+
+      - name: event_year
+        description: "Year when event was created"
+
+      - name: event_month
+        description: "Month when event was created"
+
+      - name: event_hour
+        description: "Hour when event was created"
+
+      - name: is_purchase
+        description: "True if event type is purchase"
+
+      - name: is_cart
+        description: "True if event type is cart"
+
+      - name: is_home
+        description: "True if event type is home"
+
+      - name: customer_age_group
+        description: "Customer age group pre-joined from prep_users"
+
+      - name: customer_country
+        description: "Customer country pre-joined from prep_users"
+
+      - name: customer_traffic_source
+        description: "Customer acquisition source pre-joined from prep_users"
+
+      - name: time_of_day
+        description: "Time of day: Morning, Afternoon, Evening, Night"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["Morning", "Afternoon", "Evening", "Night"]
+              config:
+                severity: warn
+
+      - name: partition_key
+        description: "First day of current month from batch_run"
+        tests:
+          - not_null
+
+      - name: run_datetime
+        description: "Exact timestamp of dbt run from batch_run"
+        tests:
+          - not_null
