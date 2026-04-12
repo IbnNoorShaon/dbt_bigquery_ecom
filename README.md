@@ -92,6 +92,7 @@ pr_ecom/
 | `events` | Web clickstream events |
 
 ---
+## Looker Dashboard Link: https://lookerstudio.google.com/s/jhUCh6XoNwM
 
 ## 🚀 Getting Started
 
